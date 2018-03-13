@@ -1,4 +1,5 @@
 module.exports = {
+  srcDir: 'client',
   /*
   ** Headers of the page
   */
