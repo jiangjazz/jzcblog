@@ -1,0 +1,26 @@
+{
+  "name": "jzcblog",
+  "version": "0.1.0",
+  "description": "New blog with nuxt mongdb element-ui",
+  "main": "index.js",
+  "scripts": {
+    "test": "nuxt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jiangjazz/jzcblog.git"
+  },
+  "keywords": [
+    "Jzc",
+    "blog",
+    "nuxt",
+    "mongdb",
+    "element-ui"
+  ],
+  "author": "JazzJiang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jiangjazz/jzcblog/issues"
+  },
+  "homepage": "https://github.com/jiangjazz/jzcblog#readme"
+}
