@@ -1,26 +1,25 @@
 {
-  "name": "jzcblog",
-  "version": "0.1.0",
+  "name": "jblog",
+  "version": "1.0.0",
   "description": "New blog with nuxt mongdb element-ui",
-  "main": "index.js",
+  "author": "Jazz Jiang <526446847@qq.com>",
+  "private": true,
   "scripts": {
-    "test": "nuxt"
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jiangjazz/jzcblog.git"
+  "dependencies": {
+    "nuxt": "^1.0.0"
   },
-  "keywords": [
-    "Jzc",
-    "blog",
-    "nuxt",
-    "mongdb",
-    "element-ui"
-  ],
-  "author": "JazzJiang",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jiangjazz/jzcblog/issues"
-  },
-  "homepage": "https://github.com/jiangjazz/jzcblog#readme"
+  "devDependencies": {
+    "babel-eslint": "^8.2.1",
+    "eslint": "^4.15.0",
+    "eslint-friendly-formatter": "^3.0.0",
+    "eslint-loader": "^1.7.1",
+    "eslint-plugin-vue": "^4.0.0"
+  }
 }

@@ -1,0 +1,15 @@
+# dependencies
+node_modules
+
+# logs
+npm-debug.log
+logs
+
+# Nuxt build
+.nuxt
+
+# self config
+config/*
+
+# package-lock.json
+package-lock.json
