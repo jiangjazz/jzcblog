@@ -31,13 +31,11 @@ export default {
   },
   mounted () {
     this.$http({
-      url: '/exapi/login',
+      url: '/exapi/addmsg',
       method: 'post',
       data: {
-        uid: 123,
-        usermsg: {
-          name: 'jazz'
-        }
+        name: 'tea',
+        desc: 'author'
       }
     })
     .then(res => {

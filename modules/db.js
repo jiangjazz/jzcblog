@@ -2,7 +2,7 @@
  * @Author: Janzen 
  * @Date: 2018-03-13 15:42:53 
  * @Last Modified by: Janzen
- * @Last Modified time: 2018-03-14 10:00:02
+ * @Last Modified time: 2018-03-14 13:39:09
  */
 /** 
  * 要在 MongoDB 中创建一个数据库，首先我们需要创建一个 MongoClient 对象，然后配置好指定的 URL 和 端口号。
@@ -17,7 +17,8 @@
 const MongoClient = require('mongodb').MongoClient
 
 const {
-  mongoUrl
+  mongoUrl,
+  dbName
 } = require('../config/backend')()
 
 /**
@@ -42,12 +43,30 @@ function _connectDB(callback) {
  * @param {json} json 插入数据json
  * @param {function} callback 回调函数，接受参数 err res
  */
-exports.insertOne = function(collectionName, json, callback) {
-  _connectDB((err, db) => {
-    db.collection(collectionName).insertOne(json, (err, res) => {
-      callback(err, res)
-      db.close()
-    })
+// function insertOne(collectionName, json, callback) {
+//   _connectDB((err, db) => {
+//     db.db(dbName).collection(collectionName).insertOne(json, (err, res) => {
+//       // let checkRepeat = find(collectionName, json, )
+//       callback(err, res)
+//       db.close()
+//     })
+//   })
+// }
+async function insertOne(collectionName, json, callback) {
+  _connectDB(async (err, db) => {
+    const checkRepeat = await db.db(dbName).collection(collectionName).find(json).toArray()
+    console.log(checkRepeat, Array.isArray(checkRepeat), checkRepeat.length)
+    if (Array.isArray(checkRepeat) && checkRepeat.length > 0) {
+      callback(err, {
+        code: 1,
+        msg: '用户已存在'
+      })
+    } else {
+      db.db(dbName).collection(collectionName).insertOne(json, (err, res) => {
+        callback(err, res)
+      })
+    }
+    db.close()
   })
 }
 
@@ -58,7 +77,8 @@ exports.insertOne = function(collectionName, json, callback) {
  * @param {*} C callback / 查询条件
  * @param {*} D null / callback
  */
-exports.find = function(collectionName, json, C, D) {
+ function find(collectionName, json, C, D) {
+  console.log(888888888888)
   let skipNumber = 0
   let limit = 0
   let callback = undefined
@@ -75,20 +95,26 @@ exports.find = function(collectionName, json, C, D) {
     limit = pagemount || 0
     dbSort = sort || {}
     callback = D
-  } else {
-    throw new Error('find 接受3个或者4个参数')
   }
+  // else {
+  //   throw new Error('find 接受3个或者4个参数')
+  // }
   // 查询
-  _connectDB(collectionName).find(json).skip(skipNumber).limit(limit).sort(sort).toArray((err, res) => {
-    if (err) {
-      callback(err, null)
+  _connectDB((err, db) => {
+    db.db(dbName).collection(collectionName).find(json).skip(skipNumber).limit(limit).sort(dbSort).toArray((err, res) => {
+      if (err) {
+        callback(err, null)
+        db.close()
+        return
+      }
+      callback(err, res)
       db.close()
-      return
-    }
-    callback(err, res)
-    db.close()
+    })
   })
 }
+
+exports.insertOne = insertOne
+exports.find = find
 // MongoClient.connect(mongoUrl, (err, db) => {
 //   if (err) throw err
 //   console.log('数据库已创建!')

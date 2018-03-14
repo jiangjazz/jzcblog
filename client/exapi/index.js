@@ -4,6 +4,10 @@ const j = request.jar()
 request = request.defaults({
   jar: j
 })
+const {
+  insertOne
+} = require('../../modules/db')
+
 
 // Create express router
 const router = express.Router()
@@ -33,6 +37,15 @@ router.post('/login', (req, res) => {
   res.status(200).json({success: '设置uid session成功'})
 })
 
+router.post('/addmsg', (req, res) => {
+  console.log('插入信息', req.body)
+  insertOne('users', req.body, (err, result) => {
+    res.status(200).json({
+      code: 0,
+      data: result
+    })
+  })
+})
 
 // Export the server middleware
 module.exports = {
