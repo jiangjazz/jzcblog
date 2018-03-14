@@ -28,6 +28,21 @@ import AppLogo from '~/components/AppLogo.vue'
 export default {
   components: {
     AppLogo
+  },
+  mounted () {
+    this.$http({
+      url: '/exapi/login',
+      method: 'post',
+      data: {
+        uid: 123,
+        usermsg: {
+          name: 'jazz'
+        }
+      }
+    })
+    .then(res => {
+      console.log(res)
+    })
   }
 }
 </script>

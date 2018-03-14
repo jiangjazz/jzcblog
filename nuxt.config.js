@@ -1,3 +1,12 @@
+const bodyParser = require('body-parser')
+const session = require('express-session')
+const RedisStore = require('connect-redis')(session)
+const redisOptions = {
+  host: '127.0.0.1',
+  port: '6379',
+  pass: ''
+}
+
 module.exports = {
   srcDir: 'client',
   /*
@@ -14,10 +23,23 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
-  /*
-  ** Customize the progress bar color
-  */
-  loading: { color: '#3B8070' },
+  /**
+   * 页面切换的加载进度条
+   */
+  loading: {
+    color: '#094',
+    height: '3px'
+  },
+  /**
+   *  Vue.js 插件
+   */
+  plugins: [
+    // axios
+    {
+      src: '~plugins/axios',
+      ssr: false
+    }
+  ],
   /*
   ** Build configuration
   */
@@ -35,5 +57,32 @@ module.exports = {
         })
       }
     }
-  }
+  },
+  /*
+  ** Add server middleware
+  ** Nuxt.js uses `connect` module as server
+  ** So most of express middleware works with nuxt.js server middleware
+  */
+  serverMiddleware: [
+    // body-parser middleware
+    bodyParser.json(),
+    // for parsing application/x-www-form-urlencoded
+    bodyParser.urlencoded({ extended: true }),
+    // for parsing multipart/form-data
+    // multer(),
+    // session middleware
+    session({
+      store: new RedisStore(redisOptions),
+      secret: 'super-secret-key',
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        maxAge: 7 * 365 * 24 * 60 * 60 * 1000,
+        secure: false
+      }
+    }),
+    // Api middleware
+    // We add /api/login & /api/logout routes
+    '~/exapi'
+  ]
 }
