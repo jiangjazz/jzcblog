@@ -2,7 +2,7 @@
  * @Author: Janzen 
  * @Date: 2018-03-13 15:42:53 
  * @Last Modified by: Janzen
- * @Last Modified time: 2018-03-14 13:39:09
+ * @Last Modified time: 2018-03-17 11:11:47
  */
 /** 
  * 要在 MongoDB 中创建一个数据库，首先我们需要创建一个 MongoClient 对象，然后配置好指定的 URL 和 端口号。
@@ -43,16 +43,7 @@ function _connectDB(callback) {
  * @param {json} json 插入数据json
  * @param {function} callback 回调函数，接受参数 err res
  */
-// function insertOne(collectionName, json, callback) {
-//   _connectDB((err, db) => {
-//     db.db(dbName).collection(collectionName).insertOne(json, (err, res) => {
-//       // let checkRepeat = find(collectionName, json, )
-//       callback(err, res)
-//       db.close()
-//     })
-//   })
-// }
-async function insertOne(collectionName, json, callback) {
+function insertOne(collectionName, json, callback) {
   _connectDB(async (err, db) => {
     const checkRepeat = await db.db(dbName).collection(collectionName).find(json).toArray()
     console.log(checkRepeat, Array.isArray(checkRepeat), checkRepeat.length)
@@ -78,7 +69,6 @@ async function insertOne(collectionName, json, callback) {
  * @param {*} D null / callback
  */
  function find(collectionName, json, C, D) {
-  console.log(888888888888)
   let skipNumber = 0
   let limit = 0
   let callback = undefined

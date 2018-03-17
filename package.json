@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "element-ui": "^2.2.1",
     "nuxt": "^1.0.0",
     "qs": "^6.5.1"
   },
@@ -27,6 +28,8 @@
     "eslint-plugin-vue": "^4.0.0",
     "express-session": "^1.15.6",
     "mongodb": "^3.0.4",
-    "request": "^2.85.0"
+    "node-sass": "^4.8.1",
+    "request": "^2.85.0",
+    "sass-loader": "^6.0.7"
   }
 }
