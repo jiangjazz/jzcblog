@@ -1,0 +1,75 @@
+@charset "UTF-8";
+/**
+ * css属性生产
+ */
+//盒子阴影
+@mixin box-shadow($value) {
+    @include prefixer(box-shadow, $value, webkit spec);
+}
+//文字阴影
+@mixin text-shadow($value) {
+    @include prefixer(text-shadow, $value, webkit spec);
+}
+//圆角
+@mixin border-radius($value){
+    @include prefixer(border-radius, $value, spec);
+}
+//转换
+@mixin transform($value){
+    @include prefixer(transform, $value, webkit moz ms o spec);
+}
+//设置转换原点
+@mixin transform-origin($value){
+    @include prefixer(transform-origin, $value, webkit moz ms o spec)
+}
+//过渡
+@mixin transition($value){
+    @include prefixer(transition, $value, webkit moz ms o spec);
+}
+//盒子模型
+@mixin box-sizing($value){
+    @include prefixer(box-sizing, $value, webkit moz spec);
+}
+//动画
+@mixin animation($value){
+    @include prefixer(animation, $value, webkit moz ms o spec);
+}
+//兼容透明度
+@mixin opacity($value){
+  opacity: $value / 100;
+  filter : alpha(opacity=$value);
+}
+//禁止选中文本
+@mixin user-select($value){
+    @include prefixer(user-select, $value, webkit moz ms o spec);
+}
+
+
+//渐变背景图
+@mixin background-image($colors, $arrow: left){
+    @if length($colors) == 2 {
+        @if $arrow == top{
+            background:nth($colors, 1); /* 一些不支持背景渐变的浏览器 */
+            background-image:-moz-linear-gradient(top, nth($colors, 1), nth($colors, 2));
+            background:-webkit-gradient(linear, 0 0, 0 bottom, from(nth($colors, 1)), to(nth($colors, 2)));
+            background-image:-o-linear-gradient(top, nth($colors, 1), nth($colors, 2));
+        }
+        @else {
+            background:nth($colors, 1); /* 一些不支持背景渐变的浏览器 */
+            background-image:-moz-linear-gradient(left, nth($colors, 1), nth($colors, 2));
+            background:-webkit-gradient(linear, 0 0, 100% 0, from(nth($colors, 1)), to(nth($colors, 2)));
+            background-image:-o-linear-gradient(left, nth($colors, 1), nth($colors, 2));
+        }
+
+    }
+    // @include prefixerValue(background-image, $value, webkit moz ms o);
+
+}
+
+// 动画延迟
+@mixin animation-delay($value){
+    animation-delay: -webkit-#{$value};
+    animation-delay: -moz-#{$value};
+    animation-delay: -o-#{$value};
+    animation-delay: $value;
+}

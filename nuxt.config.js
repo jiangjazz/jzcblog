@@ -97,7 +97,7 @@ module.exports = {
     bodyParser.json(),
     // for parsing application/x-www-form-urlencoded
     bodyParser.urlencoded({
-      extended: true
+      extended: false
     }),
     // for parsing multipart/form-data
     // multer(),
@@ -113,7 +113,6 @@ module.exports = {
       }
     }),
     // Api middleware
-    // We add /api/login & /api/logout routes
     '~/exapi'
   ]
 }

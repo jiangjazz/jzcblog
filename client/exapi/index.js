@@ -5,7 +5,8 @@ request = request.defaults({
   jar: j
 })
 const {
-  insertOne
+  DBInsertOne,
+  DBFind
 } = require('../../modules/db')
 
 
@@ -37,9 +38,38 @@ router.post('/login', (req, res) => {
   res.status(200).json({success: '设置uid session成功'})
 })
 
+// test api
 router.post('/addmsg', (req, res) => {
   console.log('插入信息', req.body)
-  insertOne('users', req.body, (err, result) => {
+  DBInsertOne('users', req.body, (err, result) => {
+    res.status(200).json({
+      code: 0,
+      data: result
+    })
+  })
+})
+
+/**
+ * 获取用户列表数据
+ * page
+ * pagemount
+ * sort
+ */
+router.post('/users/list', (req, res) => {
+  console.log('获取用户列表信息')
+  let {
+    page,
+    pagemount,
+    sort
+  } = req.body
+
+  DBFind('users', {}, {
+    page,
+    pagemount,
+    sort: {
+      type: sort
+    }
+  }, (err, result) => {
     res.status(200).json({
       code: 0,
       data: result

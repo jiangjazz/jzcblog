@@ -2,7 +2,7 @@
  * @Author: Janzen 
  * @Date: 2018-03-13 15:42:53 
  * @Last Modified by: Janzen
- * @Last Modified time: 2018-03-17 11:11:47
+ * @Last Modified time: 2018-03-17 18:53:41
  */
 /** 
  * 要在 MongoDB 中创建一个数据库，首先我们需要创建一个 MongoClient 对象，然后配置好指定的 URL 和 端口号。
@@ -45,17 +45,22 @@ function _connectDB(callback) {
  */
 function insertOne(collectionName, json, callback) {
   _connectDB(async (err, db) => {
-    const checkRepeat = await db.db(dbName).collection(collectionName).find(json).toArray()
-    console.log(checkRepeat, Array.isArray(checkRepeat), checkRepeat.length)
-    if (Array.isArray(checkRepeat) && checkRepeat.length > 0) {
-      callback(err, {
-        code: 1,
-        msg: '用户已存在'
-      })
-    } else {
-      db.db(dbName).collection(collectionName).insertOne(json, (err, res) => {
-        callback(err, res)
-      })
+    try {
+      const checkRepeat = await db.db(dbName).collection(collectionName).find(json).toArray()
+      console.log(checkRepeat, Array.isArray(checkRepeat), checkRepeat.length)
+      if (Array.isArray(checkRepeat) && checkRepeat.length > 0) {
+        callback(err, {
+          code: 1,
+          msg: '用户已存在'
+        })
+      } else {
+        db.db(dbName).collection(collectionName).insertOne(json, (err, res) => {
+          callback(err, res)
+        })
+      }
+    } catch (error) {
+      console.error(error.message)
+      callback(err, null)
     }
     db.close()
   })
@@ -81,7 +86,7 @@ function insertOne(collectionName, json, callback) {
       pagemount,
       sort
     } = C
-    skipNumber = page * pagemount || 0
+    skipNumber = (page - 1) * pagemount || 0
     limit = pagemount || 0
     dbSort = sort || {}
     callback = D
@@ -89,48 +94,24 @@ function insertOne(collectionName, json, callback) {
   // else {
   //   throw new Error('find 接受3个或者4个参数')
   // }
+  console.log('查询开始')
   // 查询
-  _connectDB((err, db) => {
-    db.db(dbName).collection(collectionName).find(json).skip(skipNumber).limit(limit).sort(dbSort).toArray((err, res) => {
-      if (err) {
-        callback(err, null)
-        db.close()
-        return
-      }
-      callback(err, res)
-      db.close()
-    })
+  _connectDB(async (err, db) => {
+    try {
+      const totalArray = await db.db(dbName).collection(collectionName).find(json).toArray()
+      const resArray = await db.db(dbName).collection(collectionName).find(json).skip(skipNumber).limit(limit).sort(dbSort).toArray()
+      callback(err, {
+        list: resArray,
+        count: totalArray.length,
+        limit
+      })
+    } catch (error) {
+      console.error(error.message)
+      callback(err, null)
+    }
+    db.close()
   })
 }
 
-exports.insertOne = insertOne
-exports.find = find
-// MongoClient.connect(mongoUrl, (err, db) => {
-//   if (err) throw err
-//   console.log('数据库已创建!')
-//   // db.close()
-//   const dbase = db.db('jzcblog')
-
-//   // dbase.collection('products').aggregate([{
-//   //   $lookup: {
-//   //     from: 'sites',
-//   //     localField: 'status',
-//   //     foreignField: 'desc',
-//   //     as: 'orderdetails'
-//   //   }
-//   // }], (err, res) => {
-//   //   if (err) throw err
-//   //   console.log(res, 999999)
-//   //   // console.log(JSON.stringify(res))
-//   //   db.close()
-//   // })
-//   dbase.collection('products').drop((err, delOK) => {
-//     if (err) throw err
-//     if (delOK) {
-//       console.log("集合已删除")
-//     } else {
-//       console.log("删除失败")
-//     }
-//     db.close()
-//   })
-// })
+exports.DBInsertOne = insertOne
+exports.DBFind = find
