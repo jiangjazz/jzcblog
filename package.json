@@ -1,6 +1,6 @@
 {
   "name": "jblog",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "New blog with nuxt mongdb element-ui",
   "author": "Jazz Jiang <526446847@qq.com>",
   "private": true,
