@@ -1,3 +1,9 @@
+/*
+ * @Author: Janzen 
+ * @Date: 2018-03-20 16:47:14 
+ * @Last Modified by: Janzen
+ * @Last Modified time: 2018-03-20 17:06:53
+ */
 <template>
   <section class="page-users">
     <h2>用户列表</h2>
@@ -13,6 +19,7 @@
       </el-table-column>
       <el-table-column label="操作">
         <template prop="_id" slot-scope="scope">
+          <el-button type="primary" @click="updateUser(scope.row)">更新</el-button>
           <el-button type="danger" @click="deleteOneUser(scope.row._id)">删除</el-button>
         </template>
       </el-table-column>
@@ -21,23 +28,30 @@
     <Pagination
       :size="userListSize"
       :total="userListCount" />
-    <AddUserDialog 
-      :successFn="loadData"/>
+    <PutUserDialog
+      :isNewUser="isNewUser"
+      :successFn="loadData"
+      :updateUserMsg="updateUserMsg"
+      />
   </section>
 </template>
 <script>
 import { mapState } from 'vuex'
 import Pagination from '@/components/public/Pagination'
-import AddUserDialog from '@/components/dialog/AddUserDialog'
+import PutUserDialog from '@/components/dialog/PutUserDialog'
 
 export default {
   name: 'userList',
   components: {
     Pagination,
-    AddUserDialog
+    PutUserDialog
   },
   data() {
     return {
+      // 是否新增用户
+      isNewUser: true,
+      // 修改用户的id
+      updateUserMsg: {}
     }
   },
   computed: {
@@ -46,7 +60,19 @@ export default {
   methods: {
     // 新增用户
     addUser() {
-      this.$store.commit('dialog/visibleAddUserDialog', true)
+      // init 弹窗相关数据
+      this.isNewUser = true
+      this.modifyId = ''
+      // 打开弹窗
+      this.$store.commit('dialog/visiblePutUserDialog', true)
+    },
+    // 修改用户
+    updateUser(obj) {
+      // init 弹窗相关数据
+      this.isNewUser = false
+      this.updateUserMsg = obj
+      // 打开弹窗
+      this.$store.commit('dialog/visiblePutUserDialog', true)
     },
     // 删除单条数据
     deleteOneUser(id) {

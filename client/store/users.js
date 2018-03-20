@@ -105,14 +105,41 @@ export const actions = {
     name,
     desc
   }) {
-    if (!name) {
-      Vue.prototype.$message.error('用户名不能为空')
-      return
-    }
     return Vue.prototype.$http({
       url: '/exapi/users/list',
       method: 'put',
       data: {
+        name,
+        desc
+      }
+    })
+  },
+  /**
+   * 修改 单个用户
+   * @param {object} data
+   * data = {
+   *    id,
+   *    name,
+   *    desc
+   * }
+   */
+  async updateUser({
+    commit,
+    state
+  }, {
+    id,
+    name,
+    desc
+  }) {
+    if (!id) {
+      Vue.prototype.$message.error('请选中一个修改用户')
+      return
+    }
+    return Vue.prototype.$http({
+      url: '/exapi/users/update',
+      method: 'post',
+      data: {
+        id,
         name,
         desc
       }

@@ -3,11 +3,11 @@
  */
 import Vue from 'vue'
 // 函数名称统计
-const DIALOG_ADDUSER_VISIBLE = 'visibleAddUserDialog'
+const DIALOG_ADDUSER_VISIBLE = 'visiblePutUserDialog'
 // state数据
 export const state = () => ({
   // 用户列表数据
-  addUserDialog: false
+  putUserDialog: false
 })
 // 同步方法
 export const mutations = {
@@ -16,6 +16,6 @@ export const mutations = {
    * @param {boolean} status true/false
    */
   [DIALOG_ADDUSER_VISIBLE](state, status) {
-    state.addUserDialog = status
+    state.putUserDialog = status
   }
 }

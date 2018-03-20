@@ -2,7 +2,7 @@
  * @Author: Janzen 
  * @Date: 2018-03-13 15:42:53 
  * @Last Modified by: Janzen
- * @Last Modified time: 2018-03-20 14:45:08
+ * @Last Modified time: 2018-03-20 17:16:14
  */
 /** 
  * 要在 MongoDB 中创建一个数据库，首先我们需要创建一个 MongoClient 对象，然后配置好指定的 URL 和 端口号。
@@ -120,16 +120,14 @@ function insertOne(collectionName, json, callback) {
   })
 }
 
+/**
+ * 删除 数据
+ * @param {*} collectionName 
+ * @param {*} json 
+ * @param {*} callback 
+ */
 function deleteOne(collectionName, json, callback) {
   _connectDB(async (err, db) => {
-    // db.db(dbName).collection(collectionName).deleteOne(json, (err, res) => {
-    //   if (err) {
-    //     callback(err, null)
-    //   } else {
-    //     callback(err, res)
-    //   }
-    //   db.close()
-    // })
     let {_id, ...otherJson} = json
     if (_id) {
       otherJson._id = ObjectID(_id)
@@ -149,18 +147,40 @@ function deleteOne(collectionName, json, callback) {
           data: delResult.result
         })
       }
-      // const delResult = await db.db(dbName).collection(collectionName).deleteOne(otherJson)
-      // console.log(json, findRes, delResult)
-      // if (Array.isArray(checkRepeat) && checkRepeat.length > 0) {
-      //   callback(err, {
-      //     code: 1,
-      //     msg: '用户已存在'
-      //   })
-      // } else {
-      //   db.db(dbName).collection(collectionName).insertOne(json, (err, res) => {
-      //     callback(err, res)
-      //   })
-      // }
+    } catch (error) {
+      console.error(error.message)
+      callback(err, null)
+    }
+    db.close()
+  })
+}
+
+/**
+ * 更新 数据
+ * @param {*} collectionName 
+ * @param {*} json 
+ * @param {*} newJson 
+ * @param {*} callback 
+ */
+function updateOne(collectionName, json, callback) {
+  _connectDB(async (err, db) => {
+    let {_id, ...otherJson} = json
+    let findJson = { _id: ObjectID(_id) }
+    try {
+      const findRes = await db.db(dbName).collection(collectionName).find(findJson).toArray()
+      if (findRes.length === 0) {
+        callback(err, {
+          code: 1,
+          msg: '查无此数据'
+        })
+      } else {
+        const delResult = await db.db(dbName).collection(collectionName).updateOne(findJson, {$set: otherJson})
+        callback(err, {
+          code: 0,
+          msg: '更新成功',
+          data: delResult.result
+        })
+      }
     } catch (error) {
       console.error(error.message)
       callback(err, null)
@@ -172,3 +192,4 @@ function deleteOne(collectionName, json, callback) {
 exports.DBInsertOne = insertOne
 exports.DBFind = find
 exports.DBDeleteOne = deleteOne
+exports.DBUpdateOne = updateOne

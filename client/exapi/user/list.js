@@ -2,7 +2,7 @@
  * @Author: Janzen 
  * @Date: 2018-03-20 10:48:33 
  * @Last Modified by: Janzen
- * @Last Modified time: 2018-03-20 16:04:17
+ * @Last Modified time: 2018-03-20 16:44:18
  */
 /**
  * 用户列表
@@ -12,7 +12,8 @@ let router = require('express').Router()
 let {
   DBInsertOne,
   DBFind,
-  DBDeleteOne
+  DBDeleteOne,
+  DBUpdateOne
 } = require('../../../modules/db')
 
 router.route('/list')
@@ -60,6 +61,24 @@ router.route('/list')
     } = req.body
 
     DBInsertOne('users', {
+      name,
+      desc
+    }, (err, result) => {
+      res.status(200).json(result)
+    })
+  })
+
+router.route('/update')
+  .post((req, res) => {
+    console.log('更新用户', req.body)
+    let {
+      id,
+      name,
+      desc
+    } = req.body
+
+    DBUpdateOne('users', {
+      _id: id,
       name,
       desc
     }, (err, result) => {
