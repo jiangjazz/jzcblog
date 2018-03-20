@@ -2,7 +2,7 @@
  * @Author: Janzen 
  * @Date: 2018-03-20 10:48:33 
  * @Last Modified by: Janzen
- * @Last Modified time: 2018-03-20 14:45:35
+ * @Last Modified time: 2018-03-20 16:04:17
  */
 /**
  * 用户列表
@@ -10,6 +10,7 @@
 let router = require('express').Router()
 
 let {
+  DBInsertOne,
   DBFind,
   DBDeleteOne
 } = require('../../../modules/db')
@@ -40,13 +41,27 @@ router.route('/list')
     })
   })
   .delete((req, res) => {
-    console.log('删除单个用户列表信息', req.body, req.params, req.query)
+    console.log('删除单个用户列表信息', req.body)
     let {
       id
     } = req.body
 
     DBDeleteOne('users', {
       _id: id
+    }, (err, result) => {
+      res.status(200).json(result)
+    })
+  })
+  .put((req, res) => {
+    console.log('新增用户', req.body)
+    let {
+      name,
+      desc
+    } = req.body
+
+    DBInsertOne('users', {
+      name,
+      desc
     }, (err, result) => {
       res.status(200).json(result)
     })

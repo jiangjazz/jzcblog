@@ -89,5 +89,33 @@ export const actions = {
         id
       }
     })
+  },
+  /**
+   * 新增 单个用户
+   * @param {object} data
+   * data = {
+   *    name,
+   *    desc
+   * }
+   */
+  async addUser({
+    commit,
+    state
+  }, {
+    name,
+    desc
+  }) {
+    if (!name) {
+      Vue.prototype.$message.error('用户名不能为空')
+      return
+    }
+    return Vue.prototype.$http({
+      url: '/exapi/users/list',
+      method: 'put',
+      data: {
+        name,
+        desc
+      }
+    })
   }
 }
