@@ -2,7 +2,7 @@
  * @Author: Janzen 
  * @Date: 2018-03-13 15:42:53 
  * @Last Modified by: Janzen
- * @Last Modified time: 2018-03-17 18:53:41
+ * @Last Modified time: 2018-03-20 14:45:08
  */
 /** 
  * 要在 MongoDB 中创建一个数据库，首先我们需要创建一个 MongoClient 对象，然后配置好指定的 URL 和 端口号。
@@ -15,7 +15,7 @@
  * ******************************************************************************************************
  */
 const MongoClient = require('mongodb').MongoClient
-
+const ObjectID = require('mongodb').ObjectID
 const {
   mongoUrl,
   dbName
@@ -55,7 +55,11 @@ function insertOne(collectionName, json, callback) {
         })
       } else {
         db.db(dbName).collection(collectionName).insertOne(json, (err, res) => {
-          callback(err, res)
+          callback(err, {
+            code: 0,
+            data: res,
+            msg: '新增成功'
+          })
         })
       }
     } catch (error) {
@@ -67,7 +71,7 @@ function insertOne(collectionName, json, callback) {
 }
 
 /**
- * 查询
+ * 查询 (不包含 _id 查询)
  * @param {string} collectionName 表单名称
  * @param {json} json 查询条件json
  * @param {*} C callback / 查询条件
@@ -101,10 +105,62 @@ function insertOne(collectionName, json, callback) {
       const totalArray = await db.db(dbName).collection(collectionName).find(json).toArray()
       const resArray = await db.db(dbName).collection(collectionName).find(json).skip(skipNumber).limit(limit).sort(dbSort).toArray()
       callback(err, {
-        list: resArray,
-        count: totalArray.length,
-        limit
+        code: 0,
+        data: {
+          list: resArray,
+          count: totalArray.length,
+          limit
+        }
       })
+    } catch (error) {
+      console.error(error.message)
+      callback(err, null)
+    }
+    db.close()
+  })
+}
+
+function deleteOne(collectionName, json, callback) {
+  _connectDB(async (err, db) => {
+    // db.db(dbName).collection(collectionName).deleteOne(json, (err, res) => {
+    //   if (err) {
+    //     callback(err, null)
+    //   } else {
+    //     callback(err, res)
+    //   }
+    //   db.close()
+    // })
+    let {_id, ...otherJson} = json
+    if (_id) {
+      otherJson._id = ObjectID(_id)
+    }
+    try {
+      const findRes = await db.db(dbName).collection(collectionName).find(otherJson).toArray()
+      if (findRes.length === 0) {
+        callback(err, {
+          code: 1,
+          msg: '查无此数据'
+        })
+      } else {
+        const delResult = await db.db(dbName).collection(collectionName).deleteOne(otherJson)
+        callback(err, {
+          code: 0,
+          msg: '删除成功',
+          data: delResult.result
+        })
+      }
+      // const delResult = await db.db(dbName).collection(collectionName).deleteOne(otherJson)
+      // console.log(json, findRes, delResult)
+      // if (Array.isArray(checkRepeat) && checkRepeat.length > 0) {
+      //   callback(err, {
+      //     code: 1,
+      //     msg: '用户已存在'
+      //   })
+      // } else {
+      //   db.db(dbName).collection(collectionName).insertOne(json, (err, res) => {
+      //     callback(err, res)
+      //   })
+      // }
     } catch (error) {
       console.error(error.message)
       callback(err, null)
@@ -115,3 +171,4 @@ function insertOne(collectionName, json, callback) {
 
 exports.DBInsertOne = insertOne
 exports.DBFind = find
+exports.DBDeleteOne = deleteOne

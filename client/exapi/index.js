@@ -2,20 +2,23 @@
  * @Author: Janzen 
  * @Date: 2018-03-20 10:49:57 
  * @Last Modified by: Janzen
- * @Last Modified time: 2018-03-20 10:50:20
+ * @Last Modified time: 2018-03-20 14:45:17
  */
 const express = require('express')
+// Create express router
+let router = express.Router()
+let app = express()
 let request = require('request')
 const j = request.jar()
 request = request.defaults({
   jar: j
 })
 
-// Create express router
-const router = express.Router()
+let {
+  DBFind
+} = require('../../modules/db')
 
-let app = express()
-
+// 通用
 router.use((req, res, next) => {
   console.log('总是被触发')
   Object.setPrototypeOf(req, app.request)
@@ -45,10 +48,7 @@ router.post('/login', (req, res) => {
 router.post('/addmsg', (req, res) => {
   console.log('插入信息', req.body)
   DBInsertOne('users', req.body, (err, result) => {
-    res.status(200).json({
-      code: 0,
-      data: result
-    })
+    res.status(200).json(result)
   })
 })
 

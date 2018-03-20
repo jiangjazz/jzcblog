@@ -7,6 +7,11 @@
       </el-table-column>
       <el-table-column prop="desc" label="描述">
       </el-table-column>
+      <el-table-column label="操作">
+        <template prop="_id" slot-scope="scope">
+          <el-button @click="deleteOne(scope.row._id)">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <Pagination
@@ -32,6 +37,19 @@ export default {
     ...mapState('users', ['userList', 'userListCount', 'userListSize'])
   },
   methods: {
+    // 删除单条数据
+    deleteOne(id) {
+      console.log(id)
+      this.$store.dispatch('users/deleteOneUser', {id})
+        .then(res => {
+          console.log('删除单条数据 成功', res)
+          if (res.code === 0) {
+            this.loadData()
+            this.$message.success(res.msg)
+          }
+        })
+    },
+    // 加载数据
     loadData() {
       let {
         page = 1,

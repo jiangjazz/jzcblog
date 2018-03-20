@@ -50,15 +50,43 @@ export const actions = {
     sort = 1,
     page = 1
   }) {
-    Vue.prototype.$http.post('/exapi/users/list', {
-      pagemount: state.userListSize,
-      sort,
-      page
+    Vue.prototype.$http({
+      url: '/exapi/users/list',
+      method: 'post',
+      data: {
+        pagemount: state.userListSize,
+        sort,
+        page
+      }
     })
     .then(res => {
       console.log('获取 用户列表请求成功', res)
       if (res.code === 0) {
         commit(USERS_LIST_GET, res.data)
+      }
+    })
+  },
+  /**
+   * 删除 单个用户
+   * @param {object} data
+   * data = {
+   *    id
+   * }
+   */
+  async deleteOneUser({
+    commit,
+    state
+  }, {
+    id
+  }) {
+    if (!id) {
+      return
+    }
+    return Vue.prototype.$http({
+      url: '/exapi/users/list',
+      method: 'delete',
+      data: {
+        id
       }
     })
   }
