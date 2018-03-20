@@ -1,14 +1,15 @@
+/*
+ * @Author: Janzen 
+ * @Date: 2018-03-20 10:49:57 
+ * @Last Modified by: Janzen
+ * @Last Modified time: 2018-03-20 10:50:20
+ */
 const express = require('express')
 let request = require('request')
 const j = request.jar()
 request = request.defaults({
   jar: j
 })
-const {
-  DBInsertOne,
-  DBFind
-} = require('../../modules/db')
-
 
 // Create express router
 const router = express.Router()
@@ -35,7 +36,9 @@ router.post('/login', (req, res) => {
   } = req.body
   req.session.uid = uid
   req.session.usermsg = usermsg
-  res.status(200).json({success: '设置uid session成功'})
+  res.status(200).json({
+    success: '设置uid session成功'
+  })
 })
 
 // test api
@@ -49,33 +52,8 @@ router.post('/addmsg', (req, res) => {
   })
 })
 
-/**
- * 获取用户列表数据
- * page
- * pagemount
- * sort
- */
-router.post('/users/list', (req, res) => {
-  console.log('获取用户列表信息')
-  let {
-    page,
-    pagemount,
-    sort
-  } = req.body
-
-  DBFind('users', {}, {
-    page,
-    pagemount,
-    sort: {
-      type: sort
-    }
-  }, (err, result) => {
-    res.status(200).json({
-      code: 0,
-      data: result
-    })
-  })
-})
+// 用户模块
+router.use('/users', require('./user/index'))
 
 // Export the server middleware
 module.exports = {
