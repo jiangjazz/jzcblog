@@ -60,6 +60,10 @@ module.exports = {
       src: '@/plugins/axios',
       ssr: false
     },
+    {
+      src: '~plugins/wangeditor',
+      ssr: false
+    },
     '@/plugins/element-ui'
   ],
   /*

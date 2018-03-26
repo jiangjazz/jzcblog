@@ -2,7 +2,7 @@
  * @Author: Janzen 
  * @Date: 2018-03-20 10:49:57 
  * @Last Modified by: Janzen
- * @Last Modified time: 2018-03-20 14:45:17
+ * @Last Modified time: 2018-03-26 10:18:27
  */
 const express = require('express')
 // Create express router
@@ -41,14 +41,6 @@ router.post('/login', (req, res) => {
   req.session.usermsg = usermsg
   res.status(200).json({
     success: '设置uid session成功'
-  })
-})
-
-// test api
-router.post('/addmsg', (req, res) => {
-  console.log('插入信息', req.body)
-  DBInsertOne('users', req.body, (err, result) => {
-    res.status(200).json(result)
   })
 })
 
