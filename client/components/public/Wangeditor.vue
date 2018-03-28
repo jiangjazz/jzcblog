@@ -14,40 +14,7 @@
 <script>
 import { mapState } from 'vuex'
 const menus = [
-        'source',
-        '|',
-        'bold',
-        'underline',
-        'italic',
-        'strikethrough',
-        'eraser',
-        'forecolor',
-        'bgcolor',
-        '|',
-        'quote',
-        'fontfamily',
-        'fontsize',
-        'head',
-        'unorderlist',
-        'orderlist',
-        'alignleft',
-        'aligncenter',
-        'alignright',
-        '|',
-        'link',
-        'unlink',
-        'table',
-        'emotion',
-        '|',
-        'img',
-        'video',
-        'location',
-        'insertcode',
-        '|',
-        'undo',
-        'redo',
-        'fullscreen'
-    ]
+]
 export default {
   name: 'editor',
   props: {
@@ -80,6 +47,12 @@ export default {
     let _this = this
     let Editor = this.$wangEditor
     this.editor = new Editor(`#${this.idName}`)
+    this.editor.enclosureClick = function() {
+      console.log('enclosureClick')
+    }
+    this.editor.hiddenClick = function() {
+      console.log('hiddenClick')
+    }
     this.editor.create()
   }
 }
