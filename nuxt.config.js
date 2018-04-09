@@ -64,8 +64,12 @@ module.exports = {
       src: '~plugins/wangeditor',
       ssr: false
     },
-    '@/plugins/element-ui'
+    '~/plugins/element-ui',
+    '~/plugins/i18n.js'
   ],
+  router: {
+    middleware: 'i18n'
+  },
   /*
    ** Build configuration
    */
