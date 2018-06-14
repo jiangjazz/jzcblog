@@ -1,0 +1,20 @@
+@charset "UTF-8";
+/************************************************************
+ * 布局
+ */
+
+.client-blog {
+  padding-top: 61px;
+  &-main {
+    padding: 0 60px 30px;
+    position: static;
+    z-index: 1;
+    overflow-x: hidden;
+  }
+  &-content{
+    margin-left: 290px;
+    padding: 40px 0 40px 50px;
+    position: relative;
+    max-width: 600px;
+  }
+}

@@ -2,7 +2,7 @@
  * @Author: Janzen 
  * @Date: 2018-03-20 16:47:14 
  * @Last Modified by: Janzen
- * @Last Modified time: 2018-03-20 17:06:53
+ * @Last Modified time: 2018-06-14 22:28:50
  */
 <template>
   <section class="page-users">
@@ -37,8 +37,8 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import Pagination from '@/components/public/Pagination'
-import PutUserDialog from '@/components/dialog/PutUserDialog'
+import Pagination from '~/components/common/Pagination'
+import PutUserDialog from '~/components/dialog/PutUserDialog'
 
 export default {
   name: 'userList',

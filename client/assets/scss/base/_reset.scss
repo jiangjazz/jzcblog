@@ -43,7 +43,11 @@
 
 *{margin: 0;padding: 0;}
 a{text-decoration: none;}
-body{background: #efefef;}
+body{
+  font-size: 15px;
+  color: #34495e;
+  background-color: #fff;
+}
 /*
 *
 * chorme下拉条样式

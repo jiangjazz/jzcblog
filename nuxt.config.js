@@ -44,12 +44,12 @@ module.exports = {
    ** Global CSS
    */
   css: [
+    'element-ui/lib/theme-chalk/reset.css',
+    'element-ui/lib/theme-chalk/index.css',
     {
       src: '~/assets/scss/index.scss',
       lang: 'scss'
-    },
-    'element-ui/lib/theme-chalk/reset.css',
-    'element-ui/lib/theme-chalk/index.css'
+    }
   ],
   /**
    * 配置在客户端和服务端共享的环境变量
