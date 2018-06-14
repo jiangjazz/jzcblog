@@ -9,14 +9,8 @@
         New blog with nuxt mongdb element-ui
       </h2>
       <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green">Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey">GitHub</a>
+        <a href="https://nuxtjs.org/" target="_blank" class="button--green">Documentation</a>
+        <a href="https://github.com/nuxt/nuxt.js" target="_blank" class="button--grey">GitHub</a>
       </div>
     </div>
   </section>
@@ -24,10 +18,21 @@
 
 <script>
 import AppLogo from '~/components/AppLogo.vue'
+import socket from '~/plugins/socket.io.js'
 
 export default {
+  data() {
+    return {
+      test: this.$t('home.title') || 999999,
+      userNumber: 0
+    }
+  },
   components: {
     AppLogo
+  },
+  beforeMount() {},
+  mounted() {
+    console.log(this.test, this.$t('home.title'))
   }
 }
 </script>
@@ -42,7 +47,8 @@ export default {
 }
 
 .title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
+  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; /* 1 */
   display: block;
   font-weight: 300;
   font-size: 100px;

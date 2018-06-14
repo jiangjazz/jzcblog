@@ -52,6 +52,12 @@ module.exports = {
     'element-ui/lib/theme-chalk/index.css'
   ],
   /**
+   * 配置在客户端和服务端共享的环境变量
+   */
+  env: {
+    socket_url: 'http://localhost:3000'
+  },
+  /**
    *  Vue.js 插件
    */
   plugins: [
@@ -65,7 +71,8 @@ module.exports = {
       ssr: false
     },
     '~/plugins/element-ui',
-    '~/plugins/i18n.js'
+    '~/plugins/i18n.js',
+    '~/plugins/socket.io.js'
   ],
   router: {
     middleware: 'i18n'
