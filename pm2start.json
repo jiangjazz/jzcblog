@@ -1,0 +1,13 @@
+{
+    "apps": [{
+        "name": "mongodb_test",
+        "script": "npm",
+        "args": "start",
+        "cwd": "./",
+        "ignore_watch" : [
+            "node_modules"
+        ],
+        "error_file": "./logs/mongodbtest-err.log",
+        "log_date_format": "YYYY-MM-DD HH:mm Z"
+    }]
+}

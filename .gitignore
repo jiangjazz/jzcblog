@@ -1,15 +1,7 @@
-# dependencies
-node_modules
-
-# logs
-npm-debug.log
+config
+!config/default.*
 logs
-
-# Nuxt build
-.nuxt
-
-# self config
-config/*
-
-# package-lock.json
-package-lock.json
+npm-debug.log
+node_modules
+public/img
+coverage
