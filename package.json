@@ -4,6 +4,7 @@
   "description": "express+moongose blog",
   "main": "index.js",
   "scripts": {
+    "dev": "NODE_ENV=default supervisor --harmony index",
     "test": "node --harmony ./node_modules/.bin/istanbul cover --report html ./node_modules/.bin/_mocha",
     "start": "NODE_ENV=production pm2 start index.js --node-args='--harmony' --name 'myblog'"
   },
